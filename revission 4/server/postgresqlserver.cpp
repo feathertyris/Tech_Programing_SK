@@ -21,11 +21,11 @@ PostgreSQLServer::PostgreSQLServer(QObject *parent) : QObject(parent) {
         QString dbHost = qgetenv("POSTGRES_HOST");
         if (dbHost.isEmpty()) dbHost = "localhost";
         QString dbName = qgetenv("POSTGRES_DB");
-        if (dbName.isEmpty()) dbName = "function_plotter";
+        if (dbName.isEmpty()) dbName = "timp_database";
         QString dbUser = qgetenv("POSTGRES_USER");
-        if (dbUser.isEmpty()) dbUser = "plotter_user";
+        if (dbUser.isEmpty()) dbUser = "timp_user";
         QString dbPass = qgetenv("POSTGRES_PASSWORD");
-        if (dbPass.isEmpty()) dbPass = "plotter123";
+        if (dbPass.isEmpty()) dbPass = "timp123";
 
         Database* db = Database::getInstance();
         if (!db->connect(dbHost, dbName, dbUser, dbPass, 5432)) {
@@ -54,7 +54,7 @@ void PostgreSQLServer::onNewConnection() {
     connect(client, &QTcpSocket::disconnected, this, &PostgreSQLServer::onClientDisconnected);
 
     qDebug() << "Клиент подключен:" << client->peerAddress().toString();
-    sendResponse(client, "Connected to Function Plotter Server");
+    sendResponse(client, "Connected to Function Timp Server");
 }
 
 void PostgreSQLServer::onReadyRead() {
