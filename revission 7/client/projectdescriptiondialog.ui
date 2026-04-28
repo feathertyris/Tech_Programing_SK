@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+<class>ProjectDescriptionDialog</class>
+<widget class="QDialog" name="ProjectDescriptionDialog">
+<property name="geometry">
+<rect>
+<x>0</x>
+<y>0</y>
+<width>1280</width>
+<height>720</height>
+</rect>
+</property>
+<property name="windowTitle">
+<string>Описание проекта — Графическое отображение ветвящейся функции</string>
+</property>
+<property name="styleSheet">
+<string notr="true">
+QDialog {
+background-color: #0F0F0F;
+}
+QLabel {
+color: white;
+font-size: 14px;
+}
+QTextEdit {
+background-color: #2A2A2A;
+border: 1px solid #404040;
+padding: 10px;
+border-radius: 8px;
+color: white;
+font-family: 'Consolas', 'Monaco', monospace;
+font-size: 13px;
+}
+QTableWidget {
+background-color: #2A2A2A;
+border: 1px solid #404040;
+border-radius: 8px;
+color: white;
+}
+QTableWidget::item {
+padding: 8px;
+border: 1px solid #404040;
+}
+QTableWidget::item:selected {
+background-color: #3A82F7;
+}
+QHeaderView::section {
+background-color: #1A1A1A;
+color: white;
+padding: 8px;
+border: none;
+}
+QGroupBox {
+color: white;
+font-weight: bold;
+border: 1px solid #404040;
+border-radius: 8px;
+margin-top: 16px;
+}
+QGroupBox::title {
+subcontrol-origin: margin;
+left: 10px;
+padding: 0 5px 0 5px;
+}
+QPushButton {
+background-color: #3A82F7;
+color: white;
+border: none;
+padding: 12px 24px;
+border-radius: 8px;
+font-weight: bold;
+font-size: 14px;
+}
+QPushButton:hover {
+background-color: #2C65BF;
+}
+</string>
+</property>
+<layout class="QVBoxLayout" name="verticalLayout">
+<property name="spacing">
+<number>20</number>
+</property>
+<property name="margin" stdset="0">
+<number>25</number>
+</property>
+<item>
+<widget class="QLabel" name="titleLabel">
+<property name="styleSheet">
+<string notr="true">
+QLabel {
+color: #3A82F7;
+font-size: 18px;
+font-weight: bold;
+margin-bottom: 10px;
+}
+</string>
+</property>
+<property name="text">
+<string>Графическое отображение ветвящейся функции</string>
+</property>
+<property name="alignment">
+<set>Qt::AlignmentFlag::AlignCenter</set>
+</property>
+</widget>
+</item>
+<item>
+<widget class="QLabel" name="subtitleLabel">
+<property name="styleSheet">
+<string notr="true">
+QLabel {
+color: #B0B0B0;
+font-size: 12px;
+margin-bottom: 25px;
+}
+</string>
+</property>
+<property name="text">
+<string>Клиент‑серверное приложение для построения графиков кусочно‑заданных функций</string>
+</property>
+<property name="alignment">
+<set>Qt::AlignmentFlag::AlignCenter</set>
+</property>
+</widget>
+</item>
+<item>
+<widget class="QTableWidget" name="projectInfoTable">
+<property name="editTriggers">
+<set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+</property>
+<property name="selectionMode">
+<enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+</property>
+<property name="selectionBehavior">
+<enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+</property>
+<column>
+<property name="text">
+<string>Параметр</string>
+</property>
+</column>
+<column>
+<property name="text">
+<string>Значение</string>
+</property>
+</column>
+</widget>
+</item>
+<item>
+<widget class="QGroupBox" name="functionGroupBox">
+<property name="title">
+<string>Математическая функция</string>
+</property>
+<layout class="QVBoxLayout" name="functionLayout">
+<item>
+<widget class="QTextEdit" name="functionDisplay">
+<property name="readOnly">
+<bool>true</bool>
+</property>
+<property name="html">
+<string notr="true">
+&lt;div style='line-height: 1.6;'&gt;
+&lt;span style='font-size:16px; font-weight:600; color:#3A82F7; display:block; margin-bottom:15px;'&gt;f(x) =&lt;/span&gt;
+&lt;div style='background:#1A1A1A; border-radius:8px; padding:15px; margin-bottom:20px; text-align:center;'&gt;
+&lt;div style='font-family:monospace; font-size:14px; color:white;'&gt;
+⎧ ∛x + a, при x &lt; 0&lt;br&gt;
+⎪ 1/x − b, при 0 &lt; x &lt; 1&lt;br&gt;
+⎩ x² − c·x + 1, при x ≥ 1
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div style='color:#FF6B6B; font-weight:600; margin-bottom:10px;'&gt;Параметры:&lt;/div&gt;
+&lt;div style='margin-left:20px; margin-bottom:15px;'&gt;
+- &lt;span style='color:#3A82F7;'&gt;a&lt;/span&gt; — сдвиг кубического корня&lt;br&gt;
+- &lt;span style='color:#3A82F7;'&gt;b&lt;/span&gt; — сдвиг гиперболы&lt;br&gt;
+- &lt;span style='color:#3A82F7;'&gt;c&lt;/span&gt; — коэффициент квадратичной функции
+&lt;/div&gt;
+&lt;div style='color:#FF6B6B; font-weight:600; margin-bottom:10px;'&gt;Особенности:&lt;/div&gt;
+&lt;div style='margin-left:20px;'&gt;
+- Разрыв в точке x = 0 (из‑за 1/x)&lt;br&gt;
+- Плавный переход в точке x = 1&lt;br&gt;
+- Возможность динамического изменения параметров a, b, c&lt;br&gt;
+- Визуализация всех трёх участков разными цветами
+&lt;/div&gt;
+&lt;/div&gt;
+</string>
+</property>
+</widget>
+</item>
+</layout>
+</widget>
+</item>
+<item>
+<widget class="QPushButton" name="showGraphButton">
+<property name="styleSheet">
+<string notr="true">
+QPushButton {
+background-color: #3A82F7;
+color: white;
+border: none;
+padding: 12px 30px;
+border-radius: 8px;
+font-weight: bold;
+font-size: 14px;
+margin-top: 20px;
+}
+QPushButton:hover {
+background-color: #2C65BF;
+}
+QPushButton:pressed {
+background-color: #2553A0;
+}
+</string>
+</property>
+<property name="text">
+<string>Показать график функции</string>
+</property>
+<property name="fixedHeight" stdset="0">
+<number>45</number>
+</property>
+</widget>
+</item>
+</layout>
+</widget>
+<resources/>
+<connections/>
+</ui>
