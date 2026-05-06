@@ -47,12 +47,12 @@ ClientGUI::ClientGUI(QWidget *parent)
 
 ClientGUI::~ClientGUI()
 {
-    if (socket->state() == QAbstractSocket::ConnectedState) {
+    if (socket && socket->state() == QAbstractSocket::ConnectedState) {
         socket->disconnectFromHost();
+        socket->waitForDisconnected(1000);
     }
     delete ui;
 }
-
 void ClientGUI::on_connectButton_clicked()
 {
     QString host = ui->hostEdit->text();
@@ -313,17 +313,21 @@ void ClientGUI::updateChart(const QVector<PlotSegment>& segments)
         return;
     }
 
+    // Очищаем существующий график правильно
+    if (ui->chartView->chart()) {
+        QChart *oldChart = ui->chartView->chart();
+        oldChart->removeAllSeries();
+        // Не удаляем старый график сразу, а просто отключаем
+        // Удалим его после использования нового
+    }
+
+    // Создаём новый график
     QChart *chart = new QChart();
     chart->setTitle("Кусочно-заданная функция f(x)");
     chart->setAnimationOptions(QChart::SeriesAnimations);
     chart->setTheme(QChart::ChartThemeDark);
     chart->setBackgroundBrush(QBrush(QColor(15, 15, 15)));
     chart->setTitleBrush(QBrush(Qt::white));
-
-    if (ui->chartView->chart()) {
-        ui->chartView->chart()->removeAllSeries();
-        delete ui->chartView->chart();
-    }
 
     double minX = std::numeric_limits<double>::max();
     double maxX = std::numeric_limits<double>::lowest();
@@ -335,33 +339,41 @@ void ClientGUI::updateChart(const QVector<PlotSegment>& segments)
         QLineSeries *series = new QLineSeries();
         series->setName(segment.name);
 
-        // Устанавливаем цвет в зависимости от сегмента
-        if (segment.color == "red") {
-            series->setPen(QPen(Qt::red, 2.5));
-        } else if (segment.color == "blue") {
-            series->setPen(QPen(Qt::blue, 2.5));
-        } else if (segment.color == "green") {
-            series->setPen(QPen(Qt::green, 2.5));
-        } else {
-            series->setPen(QPen(Qt::cyan, 2));
-        }
+        // Устанавливаем цвет
+        QColor color;
+        if (segment.color == "red") color = Qt::red;
+        else if (segment.color == "blue") color = Qt::blue;
+        else if (segment.color == "green") color = Qt::green;
+        else color = Qt::cyan;
+
+        series->setPen(QPen(color, 2.5));
 
         for (const QPointF &point : segment.points) {
             if (std::isfinite(point.y())) {
                 series->append(point);
-
-                // Обновляем границы для осей
                 if (point.x() < minX) minX = point.x();
                 if (point.x() > maxX) maxX = point.x();
                 if (point.y() < minY) minY = point.y();
                 if (point.y() > maxY) maxY = point.y();
             }
         }
-
         chart->addSeries(series);
     }
 
-    // Добавляем вертикальные линии разрыва при x=0 и x=1
+    // Добавляем оси
+    QValueAxis *axisX = new QValueAxis();
+    axisX->setTitleText("X");
+    axisX->setTitleBrush(QBrush(Qt::white));
+    axisX->setLabelsColor(Qt::white);
+    axisX->setLabelFormat("%.1f");
+
+    // Добавляем отступы для осей
+    double paddingX = (maxX - minX) * 0.05;
+    if (paddingX <= 0 || !std::isfinite(paddingX)) paddingX = 1.0;
+    axisX->setRange(minX - paddingX, maxX + paddingX);
+    chart->addAxis(axisX, Qt::AlignBottom);
+
+    // Добавляем вертикальные линии разрыва
     if (minX <= 0 && maxX >= 0) {
         QLineSeries *breakLine1 = new QLineSeries();
         breakLine1->setName("x = 0 (разрыв)");
@@ -380,22 +392,6 @@ void ClientGUI::updateChart(const QVector<PlotSegment>& segments)
         chart->addSeries(breakLine2);
     }
 
-    // Настраиваем оси
-    QValueAxis *axisX = new QValueAxis();
-    axisX->setTitleText("X");
-    axisX->setTitleBrush(QBrush(Qt::white));
-    axisX->setLabelsColor(Qt::white);
-    axisX->setLabelFormat("%.1f");
-    axisX->setRange(minX, maxX);
-    chart->addAxis(axisX, Qt::AlignBottom);
-
-    // Привязываем оси ко всем сериям
-    for (QAbstractSeries *abstractSeries : chart->series()) {
-        if (QLineSeries *lineSeries = qobject_cast<QLineSeries*>(abstractSeries)) {
-            lineSeries->attachAxis(axisX);
-        }
-    }
-
     QValueAxis *axisY = new QValueAxis();
     axisY->setTitleText("Y");
     axisY->setTitleBrush(QBrush(Qt::white));
@@ -403,18 +399,27 @@ void ClientGUI::updateChart(const QVector<PlotSegment>& segments)
     axisY->setLabelFormat("%.2f");
 
     double paddingY = (maxY - minY) * 0.1;
-    if (paddingY == 0 || !std::isfinite(paddingY)) paddingY = 1.0;
+    if (paddingY <= 0 || !std::isfinite(paddingY)) paddingY = 1.0;
     axisY->setRange(minY - paddingY, maxY + paddingY);
     chart->addAxis(axisY, Qt::AlignLeft);
 
+    // Привязываем оси ко всем сериям
     for (QAbstractSeries *abstractSeries : chart->series()) {
         if (QLineSeries *lineSeries = qobject_cast<QLineSeries*>(abstractSeries)) {
+            lineSeries->attachAxis(axisX);
             lineSeries->attachAxis(axisY);
         }
     }
 
+    // Сохраняем старый график и устанавливаем новый
+    QChart *oldChart = ui->chartView->chart();
     ui->chartView->setChart(chart);
     ui->chartView->setRenderHint(QPainter::Antialiasing);
+
+    // Удаляем старый график после установки нового
+    if (oldChart) {
+        oldChart->deleteLater();
+    }
 
     qDebug() << "График обновлён с" << segments.size() << "сегментами";
 }
