@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: function_plotter
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 02468abc
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: qt_server
+    ports:
+      - "33333:33333"
+    depends_on:
+      - db
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: function_plotter
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 02468abc
