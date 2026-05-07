@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AuthDialog</class>
+ <widget class="QDialog" name="AuthDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>450</width>
+    <height>520</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Auth</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+    QDialog {
+        background-color: \#0F0F0F;
+    }
+    QLabel {
+        color: white;
+        font-size: 14px;
+    }
+    QLineEdit {
+        background-color: \#2A2A2A;
+        border: 1px solid \#404040;
+        padding: 10px;
+        border-radius: 8px;
+        color: white;
+    }
+    QPushButton {
+        background-color: \#3A82F7;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+    QPushButton:hover {
+        background-color: \#2C65BF;
+    }
+    QPushButton#recoveryButton {
+        background-color: transparent;
+        color: \#3A82F7;
+    }
+    QPushButton#recoveryButton:hover {
+        text-decoration: underline;
+    }
+   </string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <item>
+    <widget class="QFrame" name="cardFrame">
+     <property name="styleSheet">
+      <string notr="true">
+       QFrame {
+           background-color: \#1A1A1A;
+           border-radius: 16px;
+           padding: 30px;
+       }
+      </string>
+     </property>
+     <layout class="QVBoxLayout" name="cardLayout">
+      <item>
+       <widget class="QLabel" name="titleLabel">
+        <property name="text">
+         <string>Welcome Back</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font-size: 24px; font-weight: bold; color: white;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="usernameEdit">
+        <property name="placeholderText">
+         <string>Username</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="passwordEdit">
+        <property name="placeholderText">
+         <string>Password</string>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loginButton">
+        <property name="text">
+         <string>Login</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="registerButton">
+        <property name="text">
+         <string>No account? Register</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="recoveryButton">
+        <property name="text">
+         <string>Forgot password?</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="statusLabel">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: \#FF6B6B;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
