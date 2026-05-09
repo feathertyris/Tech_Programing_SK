@@ -1,0 +1,13 @@
+release/authdialog.o
+release/clientgui.o
+release/main.o
+release/projectdescriptiondialog.o
+release/recoverydialog.o
+release/registrationdialog.o
+release/tokenpassworddialog.o
+release/moc_authdialog.o
+release/moc_clientgui.o
+release/moc_projectdescriptiondialog.o
+release/moc_recoverydialog.o
+release/moc_registrationdialog.o
+release/moc_tokenpassworddialog.o

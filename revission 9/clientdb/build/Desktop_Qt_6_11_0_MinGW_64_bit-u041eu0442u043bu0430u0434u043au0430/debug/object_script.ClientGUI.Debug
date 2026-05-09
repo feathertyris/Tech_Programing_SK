@@ -1,0 +1,13 @@
+debug/authdialog.o
+debug/clientgui.o
+debug/main.o
+debug/projectdescriptiondialog.o
+debug/recoverydialog.o
+debug/registrationdialog.o
+debug/tokenpassworddialog.o
+debug/moc_authdialog.o
+debug/moc_clientgui.o
+debug/moc_projectdescriptiondialog.o
+debug/moc_recoverydialog.o
+debug/moc_registrationdialog.o
+debug/moc_tokenpassworddialog.o
