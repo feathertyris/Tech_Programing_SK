@@ -3,9 +3,7 @@
 
 #include <QMainWindow>
 #include <QTcpSocket>
-#include <QJsonArray>
 #include <QtCharts/QChartView>
-#include <QtCharts/QChart>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
 #include <QVector>
@@ -16,6 +14,7 @@ QT_USE_NAMESPACE
     namespace Ui {
     class ClientGUI;
 }
+
 
 class ClientGUI : public QMainWindow
 {
@@ -32,6 +31,19 @@ private slots:
     void onSocketError(QAbstractSocket::SocketError error);
     void on_connected();
 
+    // Новые слоты для ползунков
+    void on_aSlider_valueChanged(int value);
+    void on_bSlider_valueChanged(int value);
+    void on_cSlider_valueChanged(int value);
+
+    // Новые слоты для спинбоксов
+    void on_aSpinBox_valueChanged(double value);
+    void on_bSpinBox_valueChanged(double value);
+    void on_cSpinBox_valueChanged(double value);
+
+    // Слот для автоматического обновления графика
+    void autoUpdatePlot();
+
 private:
     Ui::ClientGUI *ui;
     QTcpSocket *socket;
@@ -42,16 +54,15 @@ private:
         QVector<QPointF> points;
     };
 
+    void setupPointsTable();
+    void updatePointsTable(const QVector<QPointF>& points);
+    QVector<PlotSegment> splitPointsBySegments(const QVector<QPointF>& points, double a, double b, double c);
+    void processPlotData(const QJsonArray &points, bool isLimited, double originalStep, double adjustedStep, int maxPoints);
     void updateChart(const QVector<PlotSegment>& segments);
-    void processPlotData(const QJsonArray &points,
-                         bool isLimited = false,
-                         double originalStep = 0.0,
-                         double adjustedStep = 0.0,
-                         int maxPoints = 0);
+    void sendPlotRequest();  // Новый метод для отправки запроса
 
-    // Разбить точки на сегменты по интервалам
-    QVector<PlotSegment> splitPointsBySegments(const QVector<QPointF>& points,
-                                               double a, double b, double c);
+    QTimer *updateTimer;  // Таймер для дебаунса (задержка обновления)
+    bool autoUpdateEnabled;  // Флаг автоматического обновления
 };
 
 #endif // CLIENTGUI_H

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Клиент построения графиков — Система трёх функций</string>
+   <string>Клиент построения графиков — Кусочно-заданная функция</string>
   </property>
   <property name="styleSheet">
    <string notr="true">
@@ -20,35 +20,55 @@
     }
     QLabel {
         color: white;
-        font-size: 12px;
+        font-size: 11px;
     }
     QLineEdit, QDoubleSpinBox {
         background-color: #2A2A2A;
         border: 1px solid #404040;
-        padding: 6px 8px;
+        padding: 3px 5px;
         border-radius: 4px;
         color: white;
-        font-size: 11px;
+        font-size: 10px;
+    }
+    QSlider::groove:horizontal {
+        height: 4px;
+        background: #404040;
+        border-radius: 2px;
+    }
+    QSlider::handle:horizontal {
+        background: #3A82F7;
+        width: 12px;
+        height: 12px;
+        margin: -4px 0;
+        border-radius: 6px;
+    }
+    QSlider::handle:horizontal:hover {
+        background: #2C65BF;
+    }
+    QSlider::sub-page:horizontal {
+        background: #3A82F7;
+        border-radius: 2px;
     }
     QGroupBox {
         color: white;
         font-weight: bold;
         border: 1px solid #404040;
-        border-radius: 8px;
-        margin-top: 16px;
+        border-radius: 6px;
+        margin-top: 12px;
     }
     QGroupBox::title {
         subcontrol-origin: margin;
-        left: 10px;
+        left: 8px;
         padding: 0 5px 0 5px;
     }
     QPushButton {
         background-color: #3A82F7;
         color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
+        padding: 6px 12px;
+        border-radius: 5px;
         font-weight: bold;
+        font-size: 11px;
     }
     QPushButton:hover {
         background-color: #2C65BF;
@@ -62,9 +82,10 @@
     QLabel#statusLabel {
         color: #FF6B6B;
         background-color: #1A1A1A;
-        padding: 10px;
-        border-radius: 6px;
+        padding: 5px;
+        border-radius: 4px;
         border: 1px solid #404040;
+        font-size: 10px;
     }
     QGroupBox#groupBoxFunction1 {
         border-color: #FF4444;
@@ -87,13 +108,24 @@
    </string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,1,0">
+    <property name="spacing">
+     <number>5</number>
+    </property>
+    <property name="margin">
+     <number>5</number>
+    </property>
+
+    <!-- Подключение к серверу -->
     <item>
      <widget class="QGroupBox" name="groupBoxConnection">
       <property name="title">
-       <string>① Подключение к серверу</string>
+       <string>Подключение</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayoutConnection">
+       <property name="spacing">
+        <number>5</number>
+       </property>
        <item>
         <widget class="QLabel" name="labelHost">
          <property name="text">
@@ -106,8 +138,11 @@
          <property name="text">
           <string>localhost</string>
          </property>
-         <property name="placeholderText">
-          <string>Введите IP или localhost</string>
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -123,8 +158,11 @@
          <property name="text">
           <string>33333</string>
          </property>
-         <property name="placeholderText">
-          <string>Номер порта</string>
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>16777215</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -133,252 +171,403 @@
          <property name="text">
           <string>Подключиться</string>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
     </item>
 
+    <!-- Параметры функции с ползунками -->
     <item>
-     <layout class="QHBoxLayout" name="functionsLayout">
-      <!-- Функция 1 (красная) -->
-      <item>
-       <widget class="QGroupBox" name="groupBoxFunction1">
-        <property name="title">
-         <string>🔴 Функция f₁(x)</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout1">
-         <item>
-          <layout class="QHBoxLayout" name="layout1">
-           <item>
-            <widget class="QLabel" name="labelA1"><property name="text"><string>a₁:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="a1SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>1.00</double></property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layout2">
-           <item>
-            <widget class="QLabel" name="labelB1"><property name="text"><string>b₁:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="b1SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>0.00</double></property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="layout3">
-           <item>
-            <widget class="QLabel" name="labelC1"><property name="text"><string>c₁:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="c1SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>0.00</double></property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
+     <widget class="QGroupBox" name="groupBoxFunction1">
+      <property name="title">
+       <string>Параметры функции (ползунки -100..100)</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout1">
+       <property name="spacing">
+        <number>3</number>
+       </property>
 
-      <!-- Функция 2 (синяя) -->
-      <item>
-       <widget class="QGroupBox" name="groupBoxFunction2">
-        <property name="title">
-         <string>🔵 Функция f₂(x)</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout2">
+       <!-- Ползунок a -->
+       <item>
+        <layout class="QHBoxLayout" name="aLayout">
          <item>
-          <layout class="QHBoxLayout" name="layout4">
-           <item>
-            <widget class="QLabel" name="labelA2"><property name="text"><string>a₂:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="a2SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>0.00</double></property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QLabel" name="labelASlider">
+           <property name="text">
+            <string>a =</string>
+           </property>
+           <property name="minimumWidth">
+            <number>20</number>
+           </property>
+          </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layout5">
-           <item>
-            <widget class="QLabel" name="labelB2"><property name="text"><string>b₂:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="b2SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>0.00</double></property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QSlider" name="aSlider">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="minimum">
+            <number>-100</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>100</number>
+           </property>
+           <property name="tickInterval">
+            <number>20</number>
+           </property>
+           <property name="tickPosition">
+            <enum>QSlider::TicksBelow</enum>
+           </property>
+          </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layout6">
-           <item>
-            <widget class="QLabel" name="labelC2"><property name="text"><string>c₂:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="c2SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>1.00</double></property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QLabel" name="aValueLabel">
+           <property name="text">
+            <string>1.00</string>
+           </property>
+           <property name="minimumWidth">
+            <number>35</number>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="a1SpinBox">
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="minimum">
+            <double>-100.00</double>
+           </property>
+           <property name="maximum">
+            <double>100.00</double>
+           </property>
+           <property name="value">
+            <double>1.00</double>
+           </property>
+           <property name="minimumWidth">
+            <number>60</number>
+           </property>
+          </widget>
          </item>
         </layout>
-       </widget>
-      </item>
+       </item>
 
-      <!-- Функция 3 (зелёная) -->
-      <item>
-       <widget class="QGroupBox" name="groupBoxFunction3">
-        <property name="title">
-         <string>🟢 Функция f₃(x)</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout3">
+       <!-- Ползунок b -->
+       <item>
+        <layout class="QHBoxLayout" name="bLayout">
          <item>
-          <layout class="QHBoxLayout" name="layout7">
-           <item>
-            <widget class="QLabel" name="labelA3"><property name="text"><string>a₃:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="a3SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>0.00</double></property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QLabel" name="labelBSlider">
+           <property name="text">
+            <string>b =</string>
+           </property>
+           <property name="minimumWidth">
+            <number>20</number>
+           </property>
+          </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layout8">
-           <item>
-            <widget class="QLabel" name="labelB3"><property name="text"><string>b₃:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="b3SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>0.00</double></property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QSlider" name="bSlider">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="minimum">
+            <number>-100</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="tickInterval">
+            <number>20</number>
+           </property>
+           <property name="tickPosition">
+            <enum>QSlider::TicksBelow</enum>
+           </property>
+          </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layout9">
-           <item>
-            <widget class="QLabel" name="labelC3"><property name="text"><string>c₃:</string></property></widget>
-           </item>
-           <item>
-            <widget class="QDoubleSpinBox" name="c3SpinBox">
-             <property name="decimals"><number>2</number></property>
-             <property name="minimum"><double>-100.00</double></property>
-             <property name="maximum"><double>100.00</double></property>
-             <property name="value"><double>0.00</double></property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QLabel" name="bValueLabel">
+           <property name="text">
+            <string>0.00</string>
+           </property>
+           <property name="minimumWidth">
+            <number>35</number>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="b1SpinBox">
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="minimum">
+            <double>-100.00</double>
+           </property>
+           <property name="maximum">
+            <double>100.00</double>
+           </property>
+           <property name="value">
+            <double>0.00</double>
+           </property>
+           <property name="minimumWidth">
+            <number>60</number>
+           </property>
+          </widget>
          </item>
         </layout>
-       </widget>
-      </item>
-     </layout>
+       </item>
+
+       <!-- Ползунок c -->
+       <item>
+        <layout class="QHBoxLayout" name="cLayout">
+         <item>
+          <widget class="QLabel" name="labelCSlider">
+           <property name="text">
+            <string>c =</string>
+           </property>
+           <property name="minimumWidth">
+            <number>20</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSlider" name="cSlider">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="minimum">
+            <number>-100</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="tickInterval">
+            <number>20</number>
+           </property>
+           <property name="tickPosition">
+            <enum>QSlider::TicksBelow</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="cValueLabel">
+           <property name="text">
+            <string>0.00</string>
+           </property>
+           <property name="minimumWidth">
+            <number>35</number>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="c1SpinBox">
+           <property name="decimals">
+            <number>2</number>
+           </property>
+           <property name="minimum">
+            <double>-100.00</double>
+           </property>
+           <property name="maximum">
+            <double>100.00</double>
+           </property>
+           <property name="value">
+            <double>0.00</double>
+           </property>
+           <property name="minimumWidth">
+            <number>60</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
 
+    <!-- Настройки диапазона X -->
     <item>
      <widget class="QGroupBox" name="groupBoxXSettings">
       <property name="title">
-       <string>📊 Общие настройки диапазона X</string>
+       <string>Диапазон X</string>
       </property>
       <layout class="QHBoxLayout" name="xSettingsLayout">
+       <property name="spacing">
+        <number>5</number>
+       </property>
        <item>
-        <widget class="QLabel" name="labelXStart"><property name="text"><string>X начало:</string></property></widget>
+        <widget class="QLabel" name="labelXStart">
+         <property name="text">
+          <string>X min:</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QDoubleSpinBox" name="xStartSpinBox">
-         <property name="decimals"><number>1</number></property>
-         <property name="minimum"><double>-100.0</double></property>
-         <property name="maximum"><double>100.0</double></property>
-         <property name="value"><double>-10.0</double></property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>-100.0</double>
+         </property>
+         <property name="maximum">
+          <double>100.0</double>
+         </property>
+         <property name="value">
+          <double>-10.0</double>
+         </property>
+         <property name="minimumWidth">
+          <number>60</number>
+         </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="labelXEnd"><property name="text"><string>X конец:</string></property></widget>
+        <widget class="QLabel" name="labelXEnd">
+         <property name="text">
+          <string>X max:</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QDoubleSpinBox" name="xEndSpinBox">
-         <property name="decimals"><number>1</number></property>
-         <property name="minimum"><double>-100.0</double></property>
-         <property name="maximum"><double>100.0</double></property>
-         <property name="value"><double>10.0</double></property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>-100.0</double>
+         </property>
+         <property name="maximum">
+          <double>100.0</double>
+         </property>
+         <property name="value">
+          <double>10.0</double>
+         </property>
+         <property name="minimumWidth">
+          <number>60</number>
+         </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="labelXStep"><property name="text"><string>Шаг X:</string></property></widget>
+        <widget class="QLabel" name="labelXStep">
+         <property name="text">
+          <string>Шаг:</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QDoubleSpinBox" name="xStepSpinBox">
-         <property name="decimals"><number>3</number></property>
-         <property name="minimum"><double>0.01</double></property>
-         <property name="maximum"><double>10.0</double></property>
-         <property name="value"><double>0.05</double></property>
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>0.01</double>
+         </property>
+         <property name="maximum">
+          <double>10.0</double>
+         </property>
+         <property name="value">
+          <double>0.05</double>
+         </property>
+         <property name="minimumWidth">
+          <number>60</number>
+         </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
     </item>
 
+    <!-- Кнопки -->
     <item>
      <layout class="QHBoxLayout" name="buttonsLayout">
+      <property name="spacing">
+       <number>10</number>
+      </property>
       <item>
        <widget class="QPushButton" name="calculateTripleButton">
         <property name="text">
-         <string>🎨 Построить три графика</string>
+         <string>Построить три графика</string>
         </property>
-        <property name="styleSheet">
-         <string>background-color: #28A745; font-size: 14px; padding: 12px;</string>
+        <property name="visible">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="calculateButton">
         <property name="text">
-         <string>📈 Построить один график (f₁)</string>
+         <string>🔄 Автообновление: ВКЛ</string>
         </property>
         <property name="styleSheet">
-         <string>background-color: #3A82F7; font-size: 12px;</string>
+         <string>background-color: #28A745; font-size: 11px; padding: 6px 12px;</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
 
+    <!-- Статус -->
     <item>
      <widget class="QLabel" name="statusLabel">
       <property name="text">
@@ -387,14 +576,28 @@
       <property name="alignment">
        <set>Qt::AlignCenter</set>
       </property>
+      <property name="maximumHeight">
+       <number>25</number>
+      </property>
      </widget>
     </item>
+
+    <!-- График - растягивается на всё свободное место -->
     <item>
      <widget class="QGroupBox" name="groupBoxChart">
       <property name="title">
-       <string>④ График функций</string>
+       <string>График функции</string>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>1</horstretch>
+        <verstretch>1</verstretch>
+       </sizepolicy>
       </property>
       <layout class="QVBoxLayout" name="verticalLayoutChart">
+       <property name="margin">
+        <number>2</number>
+       </property>
        <item>
         <widget class="QChartView" name="chartView">
          <property name="sizePolicy">
@@ -403,8 +606,77 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumHeight">
+          <number>350</number>
+         </property>
          <property name="renderHints">
           <set>QPainter::Antialiasing</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+    <!-- Таблица точек - фиксированной высоты -->
+    <item>
+     <widget class="QGroupBox" name="groupBoxPointsTable">
+      <property name="title">
+       <string>Таблица координат</string>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>1</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayoutTable">
+       <property name="margin">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QTableWidget" name="pointsTable">
+         <property name="minimumHeight">
+          <number>100</number>
+         </property>
+         <property name="maximumHeight">
+          <number>120</number>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">
+           QTableWidget {
+               background-color: #2b2b2b;
+               alternate-background-color: #3a3a3a;
+               gridline-color: #555;
+               color: #ffffff;
+               font-size: 9px;
+           }
+           QHeaderView::section {
+               background-color: #1e1e1e;
+               padding: 2px;
+               border: 1px solid #555;
+               font-weight: bold;
+               color: #ffffff;
+           }
+           QTableWidget::item {
+               padding: 2px;
+           }
+           QTableWidget::item:selected {
+               background-color: #4a90e2;
+           }
+          </string>
          </property>
         </widget>
        </item>

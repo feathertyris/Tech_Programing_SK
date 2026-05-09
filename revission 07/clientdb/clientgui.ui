@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ClientGUI</class>
+ <widget class="QMainWindow" name="ClientGUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1400</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Клиент построения графиков — Система трёх функций</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+    QMainWindow {
+        background-color: #0F0F0F;
+    }
+    QLabel {
+        color: white;
+        font-size: 12px;
+    }
+    QLineEdit, QDoubleSpinBox {
+        background-color: #2A2A2A;
+        border: 1px solid #404040;
+        padding: 6px 8px;
+        border-radius: 4px;
+        color: white;
+        font-size: 11px;
+    }
+    QGroupBox {
+        color: white;
+        font-weight: bold;
+        border: 1px solid #404040;
+        border-radius: 8px;
+        margin-top: 16px;
+    }
+    QGroupBox::title {
+        subcontrol-origin: margin;
+        left: 10px;
+        padding: 0 5px 0 5px;
+    }
+    QPushButton {
+        background-color: #3A82F7;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+    QPushButton:hover {
+        background-color: #2C65BF;
+    }
+    QPushButton#calculateTripleButton {
+        background-color: #28A745;
+    }
+    QPushButton#calculateTripleButton:hover {
+        background-color: #218838;
+    }
+    QLabel#statusLabel {
+        color: #FF6B6B;
+        background-color: #1A1A1A;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #404040;
+    }
+    QGroupBox#groupBoxFunction1 {
+        border-color: #FF4444;
+    }
+    QGroupBox#groupBoxFunction1::title {
+        color: #FF4444;
+    }
+    QGroupBox#groupBoxFunction2 {
+        border-color: #4444FF;
+    }
+    QGroupBox#groupBoxFunction2::title {
+        color: #4444FF;
+    }
+    QGroupBox#groupBoxFunction3 {
+        border-color: #44FF44;
+    }
+    QGroupBox#groupBoxFunction3::title {
+        color: #44FF44;
+    }
+   </string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBoxConnection">
+      <property name="title">
+       <string>① Подключение к серверу</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayoutConnection">
+       <item>
+        <widget class="QLabel" name="labelHost">
+         <property name="text">
+          <string>Хост:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="hostEdit">
+         <property name="text">
+          <string>localhost</string>
+         </property>
+         <property name="placeholderText">
+          <string>Введите IP или localhost</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelPort">
+         <property name="text">
+          <string>Порт:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="portEdit">
+         <property name="text">
+          <string>33333</string>
+         </property>
+         <property name="placeholderText">
+          <string>Номер порта</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="connectButton">
+         <property name="text">
+          <string>Подключиться</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+    <item>
+     <layout class="QHBoxLayout" name="functionsLayout">
+      <!-- Функция 1 (красная) -->
+      <item>
+       <widget class="QGroupBox" name="groupBoxFunction1">
+        <property name="title">
+         <string>🔴 Функция f₁(x)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout1">
+         <item>
+          <layout class="QHBoxLayout" name="layout1">
+           <item>
+            <widget class="QLabel" name="labelA1"><property name="text"><string>a₁:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="a1SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>1.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layout2">
+           <item>
+            <widget class="QLabel" name="labelB1"><property name="text"><string>b₁:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="b1SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>0.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layout3">
+           <item>
+            <widget class="QLabel" name="labelC1"><property name="text"><string>c₁:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="c1SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>0.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+
+      <!-- Функция 2 (синяя) -->
+      <item>
+       <widget class="QGroupBox" name="groupBoxFunction2">
+        <property name="title">
+         <string>🔵 Функция f₂(x)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout2">
+         <item>
+          <layout class="QHBoxLayout" name="layout4">
+           <item>
+            <widget class="QLabel" name="labelA2"><property name="text"><string>a₂:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="a2SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>0.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layout5">
+           <item>
+            <widget class="QLabel" name="labelB2"><property name="text"><string>b₂:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="b2SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>0.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layout6">
+           <item>
+            <widget class="QLabel" name="labelC2"><property name="text"><string>c₂:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="c2SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>1.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+
+      <!-- Функция 3 (зелёная) -->
+      <item>
+       <widget class="QGroupBox" name="groupBoxFunction3">
+        <property name="title">
+         <string>🟢 Функция f₃(x)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout3">
+         <item>
+          <layout class="QHBoxLayout" name="layout7">
+           <item>
+            <widget class="QLabel" name="labelA3"><property name="text"><string>a₃:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="a3SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>0.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layout8">
+           <item>
+            <widget class="QLabel" name="labelB3"><property name="text"><string>b₃:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="b3SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>0.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layout9">
+           <item>
+            <widget class="QLabel" name="labelC3"><property name="text"><string>c₃:</string></property></widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="c3SpinBox">
+             <property name="decimals"><number>2</number></property>
+             <property name="minimum"><double>-100.00</double></property>
+             <property name="maximum"><double>100.00</double></property>
+             <property name="value"><double>0.00</double></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+
+    <item>
+     <widget class="QGroupBox" name="groupBoxXSettings">
+      <property name="title">
+       <string>📊 Общие настройки диапазона X</string>
+      </property>
+      <layout class="QHBoxLayout" name="xSettingsLayout">
+       <item>
+        <widget class="QLabel" name="labelXStart"><property name="text"><string>X начало:</string></property></widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="xStartSpinBox">
+         <property name="decimals"><number>1</number></property>
+         <property name="minimum"><double>-100.0</double></property>
+         <property name="maximum"><double>100.0</double></property>
+         <property name="value"><double>-10.0</double></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelXEnd"><property name="text"><string>X конец:</string></property></widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="xEndSpinBox">
+         <property name="decimals"><number>1</number></property>
+         <property name="minimum"><double>-100.0</double></property>
+         <property name="maximum"><double>100.0</double></property>
+         <property name="value"><double>10.0</double></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelXStep"><property name="text"><string>Шаг X:</string></property></widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="xStepSpinBox">
+         <property name="decimals"><number>3</number></property>
+         <property name="minimum"><double>0.01</double></property>
+         <property name="maximum"><double>10.0</double></property>
+         <property name="value"><double>0.05</double></property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+    <item>
+     <layout class="QHBoxLayout" name="buttonsLayout">
+      <item>
+       <widget class="QPushButton" name="calculateTripleButton">
+        <property name="text">
+         <string>🎨 Построить три графика</string>
+        </property>
+        <property name="styleSheet">
+         <string>background-color: #28A745; font-size: 14px; padding: 12px;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="calculateButton">
+        <property name="text">
+         <string>📈 Построить один график (f₁)</string>
+        </property>
+        <property name="styleSheet">
+         <string>background-color: #3A82F7; font-size: 12px;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+
+    <item>
+     <widget class="QLabel" name="statusLabel">
+      <property name="text">
+       <string>Статус: не подключено</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBoxChart">
+      <property name="title">
+       <string>④ График функций</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayoutChart">
+       <item>
+        <widget class="QChartView" name="chartView">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="renderHints">
+          <set>QPainter::Antialiasing</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QWidget</extends>
+   <header>QtCharts/QChartView</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

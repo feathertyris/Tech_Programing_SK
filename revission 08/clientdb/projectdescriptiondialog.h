@@ -25,6 +25,7 @@ private:
     ClientGUI *clientGUI;
     void setupProjectInfoTable();
     void setupMathFunctionDisplay();
+    void setupSelectionBlocking();  // Добавленный метод для блокировки выделения
 };
 
 #endif // PROJECTDESCRIPTIONDIALOG_H

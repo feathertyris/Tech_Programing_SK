@@ -18,6 +18,9 @@ ProjectDescriptionDialog::ProjectDescriptionDialog(QWidget *parent) :
     // Настраиваем отображение математической функции
     setupMathFunctionDisplay();
 
+    // Блокируем выделение элементов
+    setupSelectionBlocking();
+
     // Подключаем сигнал нажатия кнопки к слоту
     connect(ui->showGraphButton, &QPushButton::clicked, this, &ProjectDescriptionDialog::on_showGraphButton_clicked);
 }
@@ -29,6 +32,26 @@ ProjectDescriptionDialog::~ProjectDescriptionDialog()
         delete clientGUI;
         clientGUI = nullptr;
     }
+}
+
+void ProjectDescriptionDialog::setupSelectionBlocking()
+{
+    // Блокируем выделение в таблице
+    ui->projectInfoTable->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->projectInfoTable->setSelectionBehavior(QAbstractItemView::SelectItems);
+
+    // Запрещаем редактирование таблицы
+    ui->projectInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    // Отключаем фокус на таблице
+    ui->projectInfoTable->setFocusPolicy(Qt::NoFocus);
+
+    // Блокируем выделение текста в области отображения функции
+    ui->functionDisplay->setTextInteractionFlags(Qt::NoTextInteraction);
+
+    // Устанавливаем курсор по умолчанию для всех элементов
+    ui->projectInfoTable->setCursor(Qt::ArrowCursor);
+    ui->functionDisplay->setCursor(Qt::ArrowCursor);
 }
 
 void ProjectDescriptionDialog::setupProjectInfoTable()
@@ -54,8 +77,15 @@ void ProjectDescriptionDialog::setupProjectInfoTable()
     ui->projectInfoTable->setHorizontalHeaderLabels({"Параметр", "Значение"});
 
     for (int i = 0; i < parameters.size(); ++i) {
-        ui->projectInfoTable->setItem(i, 0, new QTableWidgetItem(parameters[i]));
-        ui->projectInfoTable->setItem(i, 1, new QTableWidgetItem(values[i]));
+        QTableWidgetItem *paramItem = new QTableWidgetItem(parameters[i]);
+        QTableWidgetItem *valueItem = new QTableWidgetItem(values[i]);
+
+        // Делаем элементы невыделяемыми
+        paramItem->setFlags(paramItem->flags() & ~Qt::ItemIsSelectable);
+        valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsSelectable);
+
+        ui->projectInfoTable->setItem(i, 0, paramItem);
+        ui->projectInfoTable->setItem(i, 1, valueItem);
     }
 
     ui->projectInfoTable->resizeColumnsToContents();
@@ -67,10 +97,10 @@ void ProjectDescriptionDialog::setupProjectInfoTable()
 void ProjectDescriptionDialog::setupMathFunctionDisplay()
 {
     QString functionText =
-        "<div style='line-height: 1.6; font-family: Arial, sans-serif; color: white;'>"
+        "<div style='line-height: 1.6; font-family: Arial, sans-serif; color: white; user-select: none; -webkit-user-select: none;'>"
         "<h2 style='font-size:18px; font-weight:600; margin-bottom:20px; border-bottom:2px solid #444; padding-bottom:10px;'>Кусочная функция f(x)</h2>"
 
-        "<table style='background:#1A1A1A; border-radius:8px; width:100%; border-collapse:collapse; margin-bottom:25px; box-shadow:0 2px 8px rgba(0,0,0,0.3);'>"
+        "<table style='background:#1A1A1A; border-radius:8px; width:100%; border-collapse:collapse; margin-bottom:25px; box-shadow:0 2px 8px rgba(0,0,0,0.3); user-select: none;'>"
         "  <thead>"
         "    <tr style='background:#2D2D2D;'>"
         "      <th style='padding:15px 20px; text-align:left; font-weight:bold; font-size:14px; border-bottom:2px solid #444;'>№</th>"
@@ -98,14 +128,14 @@ void ProjectDescriptionDialog::setupMathFunctionDisplay()
         "</table>"
 
         "<div style='font-weight:600; font-size:16px; margin-bottom:10px;'>Параметры:</div>"
-        "<ul style='margin-left:25px; margin-top:5px; margin-bottom:20px;'>"
+        "<ul style='margin-left:25px; margin-top:5px; margin-bottom:20px; user-select: none;'>"
         "  <li>a — сдвиг кубического корня</li>"
         "  <li>b — сдвиг гиперболы</li>"
         "  <li>c — коэффициент квадратичной функции</li>"
         "</ul>"
 
         "<div style='font-weight:600; font-size:16px; margin-bottom:10px;'>Особенности:</div>"
-        "<ul style='margin-left:25px; margin-top:5px;'>"
+        "<ul style='margin-left:25px; margin-top:5px; user-select: none;'>"
         "  <li>Разрыв в точке x = 0 (из‑за 1/x)</li>"
         "  <li>Плавный переход в точке x = 1</li>"
         "  <li>Возможность динамического изменения параметров a, b, c</li>"
@@ -115,8 +145,6 @@ void ProjectDescriptionDialog::setupMathFunctionDisplay()
 
     ui->functionDisplay->setHtml(functionText);
 }
-
-
 
 void ProjectDescriptionDialog::on_showGraphButton_clicked()
 {
