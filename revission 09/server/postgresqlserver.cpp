@@ -21,11 +21,11 @@ PostgreSQLServer::PostgreSQLServer(QObject *parent) : QObject(parent) {
         QString dbHost = qgetenv("POSTGRES_HOST");
         if (dbHost.isEmpty()) dbHost = "localhost";
         QString dbName = qgetenv("POSTGRES_DB");
-        if (dbName.isEmpty()) dbName = "function_plotter";
+        if (dbName.isEmpty()) dbName = "timp_database";
         QString dbUser = qgetenv("POSTGRES_USER");
-        if (dbUser.isEmpty()) dbUser = "postgres";
+        if (dbUser.isEmpty()) dbUser = "timp_user";
         QString dbPass = qgetenv("POSTGRES_PASSWORD");
-        if (dbPass.isEmpty()) dbPass = "02468abc";
+        if (dbPass.isEmpty()) dbPass = "timp123";
 
         Database* db = Database::getInstance();
         if (!db->connect(dbHost, dbName, dbUser, dbPass, 5432)) {

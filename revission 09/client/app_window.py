@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QPushButton, QHBoxLayout
+from PyQt5.QtCore import Qt
 from title_page import TitlePage
 from main_window import MainWindow
 from login_window import LoginWindow
@@ -9,7 +10,7 @@ class AppWindow(QWidget):
         super().__init__()
 
         self.setWindowTitle("Course Project")
-        self.resize(1100, 700)
+        self.resize(1200, 800)  # Увеличил размер окна
 
         layout = QVBoxLayout()
 
@@ -27,8 +28,27 @@ class AppWindow(QWidget):
         # ===== НАВИГАЦИЯ =====
         self.nav_layout = QHBoxLayout()
 
-        self.prev_btn = QPushButton("←")
-        self.next_btn = QPushButton("→")
+        self.prev_btn = QPushButton("← Назад")
+        self.next_btn = QPushButton("Далее →")
+
+        # Увеличиваем шрифт для кнопок навигации
+        self.prev_btn.setStyleSheet("""
+            QPushButton {
+                font-size: 18px;
+                font-weight: bold;
+                padding: 10px 20px;
+                min-width: 100px;
+            }
+        """)
+        
+        self.next_btn.setStyleSheet("""
+            QPushButton {
+                font-size: 18px;
+                font-weight: bold;
+                padding: 10px 20px;
+                min-width: 100px;
+            }
+        """)
 
         self.prev_btn.clicked.connect(self.go_prev)
         self.next_btn.clicked.connect(self.go_next)

@@ -8,20 +8,21 @@ from app_window import AppWindow
 def main():
     app = QApplication(sys.argv)
 
-    # ===== ГЛОБАЛЬНЫЙ СТИЛЬ =====
+    # ===== ГЛОБАЛЬНЫЙ СТИЛЬ С УВЕЛИЧЕННЫМ ШРИФТОМ =====
     app.setStyleSheet("""
         QWidget {
             background-color: #121212;
             color: #E0E0E0;
             font-family: Segoe UI, Arial;
-            font-size: 14px;
+            font-size: 18px;
         }
 
         QLineEdit {
             background-color: #1E1E1E;
             border: 1px solid #2C2C2C;
             border-radius: 8px;
-            padding: 10px;
+            padding: 12px;
+            font-size: 18px;
         }
 
         QLineEdit:focus {
@@ -32,8 +33,9 @@ def main():
             background-color: #3A82F7;
             border: none;
             border-radius: 8px;
-            padding: 8px 14px;
+            padding: 10px 16px;
             font-weight: bold;
+            font-size: 18px;
         }
 
         QPushButton:hover {
@@ -46,6 +48,11 @@ def main():
 
         QLabel {
             color: #A0A0A0;
+            font-size: 18px;
+        }
+        
+        QMessageBox {
+            font-size: 18px;
         }
     """)
 

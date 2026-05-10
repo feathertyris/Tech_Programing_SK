@@ -10,105 +10,153 @@ class InfoScreen(QWidget):
         super().__init__()
 
         main_layout = QVBoxLayout()
-        main_layout.setContentsMargins(40, 20, 40, 20)
-        main_layout.setSpacing(15)
+        main_layout.setContentsMargins(60, 40, 60, 40)
+        main_layout.setSpacing(25)
 
         # ===== ЗАГОЛОВОК =====
         title = QLabel("Задание на курсовой проект")
         title.setAlignment(Qt.AlignCenter)
-        title.setStyleSheet("font-size: 20px; font-weight: bold; color: white;")
+        title.setStyleSheet("""
+            QLabel {
+                font-size: 26px;
+                font-weight: bold;
+                color: white;
+                margin-bottom: 20px;
+            }
+        """)
 
-        # ===== ОПИСАНИЕ =====
+        # ===== ОПИСАНИЕ (РАСТЯНУТОЕ НА ВСЮ ШИРИНУ) =====
         description = QLabel(
             "Разработать приложение для вычисления значений кусочной функции "
             "на интервале [-10; 10] с последующим отображением графика.\n\n"
             "При изменении параметров a, b, c график обновляется автоматически."
         )
         description.setWordWrap(True)
-        description.setMaximumWidth(800)
         description.setStyleSheet("""
-            background-color: #1A1A1A;
-            border-radius: 10px;
-            padding: 12px;
+            QLabel {
+                background-color: #1A1A1A;
+                border-radius: 16px;
+                padding: 20px;
+                font-size: 18px;
+                line-height: 1.6;
+            }
         """)
-
-        desc_container = QHBoxLayout()
-        desc_container.addStretch()
-        desc_container.addWidget(description)
-        desc_container.addStretch()
 
         # ===== НИЖНИЙ БЛОК =====
         bottom_layout = QHBoxLayout()
-        bottom_layout.setSpacing(20)
+        bottom_layout.setSpacing(30)
 
-        # ===== ФУНКЦИЯ (КАРТИНКА) =====
+        # ===== ФУНКЦИЯ (РАСТЯНУТАЯ) =====
         func_frame = QFrame()
-        func_frame.setFixedWidth(350)
+        func_frame.setMinimumWidth(450)
         func_frame.setStyleSheet("""
             QFrame {
                 background-color: #1A1A1A;
-                border-radius: 12px;
-                padding: 12px;
+                border-radius: 16px;
+                padding: 20px;
             }
         """)
 
         func_layout = QVBoxLayout()
+        func_layout.setSpacing(15)
 
         func_title = QLabel("Функция")
-        func_title.setStyleSheet("font-weight: bold; color: white;")
+        func_title.setStyleSheet("""
+            QLabel {
+                font-size: 22px;
+                font-weight: bold;
+                color: white;
+                margin-bottom: 5px;
+            }
+        """)
 
         func_image = QLabel()
         pixmap = QPixmap(resource_path("ui/formula.png"))
 
         if pixmap.isNull():
             print("Ошибка: formula.png не найден")
-
-        func_image.setPixmap(pixmap)
-        func_image.setScaledContents(True)
-        func_image.setFixedHeight(120)
+            func_image.setText("""
+                f(x) = ⎧ ∛x + a, при x < 0
+                       ⎨ 1/x - b, при 0 < x < 1
+                       ⎩ x² - c·x + 1, при x ≥ 1
+            """)
+            func_image.setStyleSheet("""
+                QLabel {
+                    font-family: monospace;
+                    font-size: 16px;
+                    color: #E0E0E0;
+                    padding: 20px;
+                    background-color: #0F0F0F;
+                    border-radius: 12px;
+                }
+            """)
+        else:
+            func_image.setPixmap(pixmap)
+            func_image.setScaledContents(True)
+            func_image.setMinimumHeight(150)
+            func_image.setMinimumWidth(400)
 
         func_layout.addWidget(func_title)
         func_layout.addWidget(func_image)
 
         func_frame.setLayout(func_layout)
 
-        # ===== ОСОБЕННОСТИ =====
+        # ===== ОСОБЕННОСТИ (РАСТЯНУТЫЕ) =====
         features_frame = QFrame()
+        features_frame.setMinimumWidth(450)
         features_frame.setStyleSheet("""
             QFrame {
                 background-color: #1A1A1A;
-                border-radius: 12px;
-                padding: 12px;
+                border-radius: 16px;
+                padding: 20px;
             }
         """)
 
         features_layout = QVBoxLayout()
+        features_layout.setSpacing(15)
+        features_layout.setContentsMargins(0, 0, 0, 0)
 
         features_title = QLabel("Особенности")
-        features_title.setStyleSheet("font-weight: bold; color: white;")
+        features_title.setStyleSheet("""
+            QLabel {
+                font-size: 22px;
+                font-weight: bold;
+                color: white;
+                margin-bottom: 5px;
+            }
+        """)
 
-        features = QLabel(
-            "• ∛x определена при всех x < 0\n"
-            "• 1/x имеет разрыв при x = 0\n"
+        features_text = QLabel(
+            "• ∛x + a определена при всех x < 0\n"
+            "• 1/x - b имеет разрыв при x = 0\n"
             "• на интервале (0, 1) функция убывает\n"
-            "• x² - 2x + 1 = (x - 1)² ≥ 0\n"
+            "• x² - cx + 1 = (x - 1)² ≥ 0\n"
             "• минимум достигается при x = 1"
         )
-        features.setWordWrap(True)
+        features_text.setWordWrap(True)
+        features_text.setAlignment(Qt.AlignTop)
+        features_text.setStyleSheet("""
+            QLabel {
+                font-size: 18px;
+                line-height: 1.8;
+                padding: 0px;
+                margin: 0px;
+            }
+        """)
 
         features_layout.addWidget(features_title)
-        features_layout.addWidget(features)
+        features_layout.addWidget(features_text)
+        features_layout.addStretch()
 
         features_frame.setLayout(features_layout)
 
-        bottom_layout.addStretch()
+        # Растягиваем оба блока
         bottom_layout.addWidget(func_frame)
         bottom_layout.addWidget(features_frame)
-        bottom_layout.addStretch()
 
         # ===== СБОРКА =====
         main_layout.addWidget(title)
-        main_layout.addLayout(desc_container)
+        main_layout.addWidget(description)
         main_layout.addLayout(bottom_layout)
         main_layout.addStretch()
 
@@ -120,18 +168,24 @@ class MainWindow(QWidget):
         super().__init__()
 
         self.setWindowTitle("Course Project")
-        self.resize(1100, 700)
+        self.resize(1280, 720)  # Установлено разрешение 1280×720
 
         layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
 
+        # ===== STACKED WIDGET =====
         self.stack = QStackedWidget()
 
         self.info_screen = InfoScreen()
         self.graph_screen = GraphWindow(on_logout)
 
-        self.stack.addWidget(self.info_screen)
-        self.stack.addWidget(self.graph_screen)
+        self.stack.addWidget(self.info_screen)  # 0 - Информация
+        self.stack.addWidget(self.graph_screen)  # 1 - График
 
+        # ===== СБОРКА =====
         layout.addWidget(self.stack)
 
         self.setLayout(layout)
+        
+        # Установка начальной страницы
+        self.stack.setCurrentIndex(0)
