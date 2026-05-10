@@ -4,9 +4,9 @@ services:
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_DB: timp_database
-      POSTGRES_USER: timp_user
-      POSTGRES_PASSWORD: timp123
+      POSTGRES_DB: function_plotter
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 02468abc
     ports:
       - "5432:5432"
 
@@ -19,6 +19,6 @@ services:
       - db
     environment:
       POSTGRES_HOST: db
-      POSTGRES_DB: timp_database
-      POSTGRES_USER: timp_user
-      POSTGRES_PASSWORD: timp123
+      POSTGRES_DB: function_plotter
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 02468abc
