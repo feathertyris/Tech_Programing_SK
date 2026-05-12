@@ -3,6 +3,9 @@
 #include <QDebug>
 #include <limits>
 
+//MathEngine::generateSystemPoints — генератор точек для графика.
+//MathEngine::calculateFunction — вычисление значения функции в заданной точке.
+
 QVector<Point> MathEngine::generateSystemPoints(double a, double b, double c,
                                                 double xStart, double xEnd, double step)
 {
@@ -47,7 +50,7 @@ QVector<Point> MathEngine::generateSystemPoints(double a, double b, double c,
 double MathEngine::calculateFunction(double x, double a, double b, double c)
 {
     if (x < 0) {
-        return std::cbrt(x) + a;
+        return std::cbrt(x) + a; //это вычисление кубического корня из x с последующим прибавлением параметра a.
     }
 
     if (x > 0 && x < 1) {
