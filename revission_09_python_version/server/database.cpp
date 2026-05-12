@@ -1,10 +1,12 @@
 #include "database.h"
-#include <QDebug>
-#include <QSqlError>
+#include <QDebug> // для вывода отладочных сообщений
+#include <QSqlError> // для обработки ошибок SQL
 
-Database* Database::instance = nullptr;
+//Реализация паттерна Singleton,гарантирует, что в программе будет существовать только один экземпляр класса Database
 
-Database::Database() {}
+Database* Database::instance = nullptr; // Статическая переменная класса
+
+Database::Database() {} // конструктор
 
 Database* Database::getInstance() {
     if (!instance) {
@@ -15,7 +17,7 @@ Database* Database::getInstance() {
 
 bool Database::connect(const QString& host, const QString& dbName,
                     const QString& user, const QString& password, int port) {
-    db = QSqlDatabase::addDatabase("QPSQL");
+    db = QSqlDatabase::addDatabase("QPSQL"); // Драйвер PostgreSQL
     db.setHostName(host);
     db.setDatabaseName(dbName);
     db.setUserName(user);
