@@ -10,22 +10,23 @@
 #include <QRegularExpression>
 
 PostgreSQLServer::PostgreSQLServer(QObject *parent) : QObject(parent) {
-    m_server = new QTcpServer(this);
+    m_server = new QTcpServer(this); //m_server —  (указатель),
     connect(m_server, &QTcpServer::newConnection, this, &PostgreSQLServer::onNewConnection);
 
     if (!m_server->listen(QHostAddress::Any, 33333)) {
         qDebug() << "Ошибка запуска:" << m_server->errorString();
     } else {
         qDebug() << "Сервер запущен на порту 33333";
+        //qgetenv функция Qt, считывающая значение переменной окружения
 
         QString dbHost = qgetenv("POSTGRES_HOST");
         if (dbHost.isEmpty()) dbHost = "localhost";
         QString dbName = qgetenv("POSTGRES_DB");
-        if (dbName.isEmpty()) dbName = "function_plotter";
+        if (dbName.isEmpty()) dbName = "timp_database";
         QString dbUser = qgetenv("POSTGRES_USER");
-        if (dbUser.isEmpty()) dbUser = "postgres";
+        if (dbUser.isEmpty()) dbUser = "timp_user";
         QString dbPass = qgetenv("POSTGRES_PASSWORD");
-        if (dbPass.isEmpty()) dbPass = "02468abc";
+        if (dbPass.isEmpty()) dbPass = "timp123";
 
         Database* db = Database::getInstance();
         if (!db->connect(dbHost, dbName, dbUser, dbPass, 5432)) {
@@ -54,14 +55,15 @@ void PostgreSQLServer::onNewConnection() {
     connect(client, &QTcpSocket::disconnected, this, &PostgreSQLServer::onClientDisconnected);
 
     qDebug() << "Клиент подключен:" << client->peerAddress().toString();
-    sendResponse(client, "Connected to Function Plotter Server");
+    sendResponse(client, "Connected to Server");
 }
 
 void PostgreSQLServer::onReadyRead() {
     QTcpSocket* client = qobject_cast<QTcpSocket*>(sender());
-    if (!client || !m_clients.contains(client)) return;
+    //sender() — метод Qt, возвращающий указатель на объект, который испустил сигнал (в данном случае — QTcpSocket конкретного клиента).
+    if (!client || !m_clients.contains(client)) return; //Проверка валидности клиента
 
-    QByteArray data = client->readAll();
+    QByteArray data = client->readAll();//Чтение всех доступных данных из сокета:
     m_clients[client].buffer += QString::fromUtf8(data);
 
     if (m_clients[client].buffer.contains('\n')) {
@@ -76,7 +78,7 @@ void PostgreSQLServer::onReadyRead() {
 
 void PostgreSQLServer::processRequest(QTcpSocket* client, const QString& request) {
     qDebug() << "Запрос:" << request;
-    QStringList parts = request.split('|');
+    QStringList parts = request.split('|');// split('|') — разбивает строку по символу |
     if (parts.isEmpty()) {
     sendResponse(client, "ERROR|Empty");
         return;
@@ -112,7 +114,7 @@ void PostgreSQLServer::processRequest(QTcpSocket* client, const QString& request
             sendResponse(client, "RESET_FAILED|Error");
             qDebug() << "❌ Ошибка восстановления пароля:" << parts[1];
         }
-    } else if (cmd == "plot_system" && parts.size() >= 7) {
+    } else if (cmd == "plot_system" && parts.size() >= 7) { //plot_system — построение графиков системы из нескольких функций
         bool ok1, ok2, ok3, ok4, ok5, ok6;
         double a = parts[1].toDouble(&ok1);
         double b = parts[2].toDouble(&ok2);
@@ -127,7 +129,7 @@ void PostgreSQLServer::processRequest(QTcpSocket* client, const QString& request
         } else {
             sendResponse(client, "PLOT_SYSTEM_FAILED|Invalid parameters");
         }
-    } else if (cmd == "plot" && parts.size() >= 4) {
+    } else if (cmd == "plot" && parts.size() >= 4) { //plot — построение графика одной математической функции
         bool ok1, ok2, ok3;
         double a = parts[1].toDouble(&ok1);
         double b = parts[2].toDouble(&ok2);
