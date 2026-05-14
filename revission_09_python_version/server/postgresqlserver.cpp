@@ -169,12 +169,8 @@ void PostgreSQLServer::sendJsonPoints(QTcpSocket* client, const FunctionParams& 
     for (const Point& point : points) {
 
         double y = point.y;
-
-        // ❗ ФИЛЬТР БИТЫХ ЗНАЧЕНИЙ
         if (std::isnan(y) || std::isinf(y))
             continue;
-
-        // ❗ ОГРАНИЧЕНИЕ "УЛЁТА"
         if (std::abs(y) > 1e6)
             continue;
 
